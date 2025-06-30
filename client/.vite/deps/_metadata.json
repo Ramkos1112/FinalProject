@@ -2,7 +2,105 @@
   "hash": "6116de39",
   "configHash": "a7dcddeb",
   "lockfileHash": "86c81403",
-  "browserHash": "05168934",
-  "optimized": {},
-  "chunks": {}
+  "browserHash": "5428b0cb",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "c2b605d1",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "26cc4a98",
+      "needsInterop": true
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "927946d4",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "5af6fc16",
+      "needsInterop": true
+    },
+    "styled-components": {
+      "src": "../../node_modules/styled-components/dist/styled-components.browser.esm.js",
+      "file": "styled-components.js",
+      "fileHash": "b7f35918",
+      "needsInterop": false
+    },
+    "formik": {
+      "src": "../../node_modules/formik/dist/formik.esm.js",
+      "file": "formik.js",
+      "fileHash": "c226ffb2",
+      "needsInterop": false
+    },
+    "yup": {
+      "src": "../../node_modules/yup/index.esm.js",
+      "file": "yup.js",
+      "fileHash": "8f3cc5ad",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "9a1acdf4",
+      "needsInterop": false
+    },
+    "@mui/icons-material/DirectionsRun": {
+      "src": "../../node_modules/@mui/icons-material/esm/DirectionsRun.js",
+      "file": "@mui_icons-material_DirectionsRun.js",
+      "fileHash": "1563fc87",
+      "needsInterop": false
+    },
+    "@mui/icons-material/ArrowBack": {
+      "src": "../../node_modules/@mui/icons-material/esm/ArrowBack.js",
+      "file": "@mui_icons-material_ArrowBack.js",
+      "fileHash": "99be3eb7",
+      "needsInterop": false
+    },
+    "@mui/icons-material/ArrowForward": {
+      "src": "../../node_modules/@mui/icons-material/esm/ArrowForward.js",
+      "file": "@mui_icons-material_ArrowForward.js",
+      "fileHash": "2c5940dd",
+      "needsInterop": false
+    },
+    "@mui/icons-material/Star": {
+      "src": "../../node_modules/@mui/icons-material/esm/Star.js",
+      "file": "@mui_icons-material_Star.js",
+      "fileHash": "26f870ea",
+      "needsInterop": false
+    },
+    "@mui/icons-material/StarBorder": {
+      "src": "../../node_modules/@mui/icons-material/esm/StarBorder.js",
+      "file": "@mui_icons-material_StarBorder.js",
+      "fileHash": "cd1569ec",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-RZYAKQZM": {
+      "file": "chunk-RZYAKQZM.js"
+    },
+    "chunk-WPIHAIW7": {
+      "file": "chunk-WPIHAIW7.js"
+    },
+    "chunk-XQIPT53K": {
+      "file": "chunk-XQIPT53K.js"
+    },
+    "chunk-ANBVN5NW": {
+      "file": "chunk-ANBVN5NW.js"
+    },
+    "chunk-KS2M7ZJI": {
+      "file": "chunk-KS2M7ZJI.js"
+    },
+    "chunk-5WRI5ZAA": {
+      "file": "chunk-5WRI5ZAA.js"
+    }
+  }
 }
