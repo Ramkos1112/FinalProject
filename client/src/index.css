@@ -1,0 +1,25 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-accent: #ff0000;
+  --color-background: #555555;
+  --color-darkest: #000000;
+  --color-accentText: #ffffff;
+}
+*{
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  background: #292020d5;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #ffffff;
+}
