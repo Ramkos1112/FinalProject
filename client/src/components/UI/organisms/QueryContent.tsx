@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import QuestionsContext from "../../contexts/QuestionContext.tsx";
 import { AnswersContextType, Question, QuestionsContextType, UserContextType } from "../../../types";
 import UsersContext from "../../contexts/UserContext.tsx";
-import EditingQuestion from "../../UI/molecules/QueryEdit.tsx";
+import EditingQuestion from "../molecules/EditingQuestion.tsx";
 import AnswersContext from "../../contexts/RepliesContext.tsx";
 import AnswerInput from "../../UI/molecules/ReplyInput.tsx";
 import EditingAnswer from "../../UI/molecules/ReplyEdit.tsx";
