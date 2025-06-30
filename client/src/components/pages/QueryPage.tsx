@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { Question, UserContextType } from "../../types";
 import UsersContext from "../contexts/UserContext";
-import QueryEdit from "../UI/molecules/QueryEdit";
+import EditingQuestion from "../UI/molecules/EditingQuestion";
 
 const StyledSection = styled.section`
   padding: 20px 200px;
@@ -67,7 +67,7 @@ const QueryPage = () => {
         </>
       )}
       {editing && question && (
-        <QueryEdit question={question} onClose={() => setEditing(false)} />
+        <EditingQuestion question={question} onClose={() => setEditing(false)} />
       )}
     </StyledSection>
   );

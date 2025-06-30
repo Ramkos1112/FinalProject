@@ -24,12 +24,8 @@ const StyledDiv = styled.div`
         border: none;
         height: 30px;
         font-weight: 600;
-        background-color: var(--color-primary);
+        background-color: var(--color-secondary);
         font-family: "Times New Roman", Times, serif;
-    }
-    >input:hover, textarea:hover{
-        background-color: var(--color-accent);
-        transition: 0.3s;
     }
     >textarea{
         height: 80px;

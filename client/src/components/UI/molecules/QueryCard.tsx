@@ -6,8 +6,6 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Question, UserContextType } from "../../../types";
 import UsersContext from "../../contexts/UserContext.tsx";
 
-
-
 type Props = {
     data: Question
 }
@@ -39,6 +37,10 @@ const StyledDiv = styled.div`
             font-style: italic;
             color: var(--color-secondary);
         }
+        >.edited {
+            font-style: italic;
+            color: gray;
+        }
     }
     .body{
         grid-area: 1 / 2 / 4 / 3;
@@ -68,7 +70,7 @@ const StyledDiv = styled.div`
             font-size: 20px;
         }
     }
-        
+
     @media (min-width: 0px) and (max-width: 768px) {
         display: grid;
         grid-template-columns: 1fr;
@@ -102,47 +104,46 @@ const StyledDiv = styled.div`
 `
 
 const QuestionCard = ({ data }: Props) => {
-
     const { loggedInUser } = useContext(UsersContext) as UserContextType;
     const [likesCount, setLikesCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const accessJWT = sessionStorage.getItem("accessJWT");
 
     useEffect(() => {
-    fetch(`http://localhost:5500/likes/count/${data._id}`)
-        .then(res => res.json())
-        .then(question => setLikesCount(question.likesCount))
-        .catch(console.error);
+        fetch(`http://localhost:5500/likes/count/${data._id}`)
+            .then(res => res.json())
+            .then(question => setLikesCount(question.likesCount))
+            .catch(console.error);
 
         if (accessJWT) {
-        fetch(`http://localhost:5500/likes/user-liked/${data._id}`, {
-        headers: {
-            Authorization:`Bearer ${accessJWT}`
+            fetch(`http://localhost:5500/likes/user-liked/${data._id}`, {
+                headers: {
+                    Authorization: `Bearer ${accessJWT}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => setLiked(data.liked))
+                .catch(console.error);
         }
-        })
-        .then(res => res.json())
-        .then(data => setLiked(data.liked))
-        .catch(console.error);
-        } 
-    },[data._id, accessJWT]);
+    }, [data._id, accessJWT]);
 
     const toggleLike = () => {
-    fetch(`http://localhost:5500/likes/toggle/${data._id}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization":`Bearer ${accessJWT}`
-        }
-    })
-        .then(res => res.json())
-        .then(data => {
-        setLiked(data.liked);
-        setLikesCount(prev => data.liked ? prev + 1 : prev - 1);
+        fetch(`http://localhost:5500/likes/toggle/${data._id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessJWT}`
+            }
         })
-        .catch(console.error);
+            .then(res => res.json())
+            .then(data => {
+                setLiked(data.liked);
+                setLikesCount(prev => data.liked ? prev + 1 : prev - 1);
+            })
+            .catch(console.error);
     };
 
-    return ( 
+    return (
         <StyledDiv>
             <div className="info">
                 <div>
@@ -157,6 +158,9 @@ const QuestionCard = ({ data }: Props) => {
                 <p>Answers: {data.answersCount}</p>
                 <p className="name">{data.authorUsername}</p>
                 <p>{new Date(data.createdAt).toLocaleDateString()}</p>
+                {data.isEdited && (
+                    <p className="edited">Edited on: {new Date(data.updatedAt).toLocaleDateString()}</p>
+                )}
             </div>
             <div className="body">
                 <Link to={`/questions/${data._id}`}>
@@ -168,7 +172,7 @@ const QuestionCard = ({ data }: Props) => {
                 ))}</div>
             </div>
         </StyledDiv>
-     );
+    );
 }
  
 export default QuestionCard;
