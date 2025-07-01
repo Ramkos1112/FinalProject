@@ -1,9 +1,16 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import { Question, UserContextType } from "../../types";
-import UsersContext from "../contexts/UserContext";
+import { useParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Question } from "../../types";
+import QuestionsContext from "../contexts/QuestionContext";
+import { QuestionsContextType } from "../../types";
+import UserContext from "../contexts/UserContext";
+import { UserContextType } from "../../types";
 import EditingQuestion from "../UI/molecules/EditingQuestion";
+import { AnswersProvider } from "../contexts/RepliesContext";
+import AnswersContext from "../contexts/RepliesContext";
+import ReplyCard from "../UI/molecules/ReplyCard";
+import ReplyInput from "../UI/molecules/ReplyInput";
 
 const StyledSection = styled.section`
   padding: 20px 200px;
@@ -34,8 +41,9 @@ const QueryPage = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
 
-  const { loggedInUser } = useContext(UsersContext) as UserContextType;
-  const accessJWT = sessionStorage.getItem("accessJWT");
+  const { loggedInUser } = useContext(UserContext) as UserContextType;
+  const { refetchQuestions } = useContext(QuestionsContext) as QuestionsContextType;
+  const accessJWT = sessionStorage.getItem("accessJWT") || localStorage.getItem("accessJWT");
 
   useEffect(() => {
     if (!_id) return;
@@ -73,6 +81,7 @@ const QueryPage = () => {
       });
 
       if (res.ok) {
+        refetchQuestions();
         navigate('/');
       } else {
         console.error("Failed to delete question");
@@ -91,23 +100,53 @@ const QueryPage = () => {
           <h2>{question.title}</h2>
           <p>{question.body}</p>
           <p><strong>Tags:</strong> {question.tags.join(", ")}</p>
-
+          {question.isEdited && (
+            <p style={{ fontStyle: "italic", color: "gray" }}>
+              (Edited on {new Date(question.updatedAt).toLocaleString()})
+            </p>
+          )}
           {loggedInUser?._id === question.authorId && (
             <>
-              <button className="edit-button" onClick={() => setEditing(true)}>
-                Edit
-              </button>
-              <button className="delete-button" onClick={handleDelete}>
-                Delete
-              </button>
+              <button className="edit-button" onClick={() => setEditing(true)}>Edit</button>
+              <button className="delete-button" onClick={handleDelete}>Delete</button>
             </>
           )}
         </>
       )}
+
       {editing && question && (
         <EditingQuestion question={question} onClose={() => setEditing(false)} />
       )}
+
+      {question && (
+        <AnswersProvider questionId={question._id}>
+          <div style={{ marginTop: '2rem' }}>
+            <h3>Replies</h3>
+            <ReplyList />
+            {loggedInUser && (
+              <div style={{ marginTop: '1rem' }}>
+                <ReplyInput questionId={question._id} />
+              </div>
+            )}
+          </div>
+        </AnswersProvider>
+      )}
     </StyledSection>
+  );
+};
+
+const ReplyList = () => {
+  const { answers, answerIsLoading } = useContext(AnswersContext) ?? { answers: [], answerIsLoading: false };
+
+  if (answerIsLoading) return <p>Loading replies...</p>;
+  if (!answers.length) return <p>No replies yet.</p>;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      {answers.map(reply => (
+        <ReplyCard key={reply._id} reply={reply} />
+      ))}
+    </div>
   );
 };
 

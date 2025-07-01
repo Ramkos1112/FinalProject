@@ -7,7 +7,7 @@ import { Answer } from "../../types";
 import { AnswerActionTypes } from "../../types";
 
 const reducer = (state: Answer[], action: AnswerActionTypes): Answer[] => {
-    switch(action.type){
+    switch (action.type) {
         case 'setData':
             return action.data;
         case 'addAnswer':
@@ -21,11 +21,11 @@ const reducer = (state: Answer[], action: AnswerActionTypes): Answer[] => {
         default:
             return state;
     }
-}
+};
 
-type Props =  ChildrenElementProp & {
-    questionId?: string
-}
+type Props = ChildrenElementProp & {
+    questionId?: string;
+};
 
 const AnswersContext = createContext<undefined | AnswersContextType>(undefined);
 
@@ -38,7 +38,7 @@ const AnswersProvider = ({ children, questionId }: Props) => {
         if (!questionId) return { error: "Invalid questionId" };
 
         const accessJWT = localStorage.getItem('accessJWT') || sessionStorage.getItem('accessJWT');
-        const backResponse = await fetch(`http://localhost:5500/questions/${questionId}/answers`, {
+        const response = await fetch(`http://localhost:5500/api/comments/${questionId}/answers`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -46,10 +46,16 @@ const AnswersProvider = ({ children, questionId }: Props) => {
             },
             body: JSON.stringify(newAnswer)
         });
-        const data = await backResponse.json();
-        if ('error' in data) {
-            return { error: data.error };
+
+        const contentType = response.headers.get("content-type");
+        if (!response.ok) {
+            const error = contentType?.includes("application/json")
+                ? await response.json()
+                : await response.text();
+            return { error };
         }
+
+        const data = await response.json();
         dispatch({
             type: "addAnswer",
             newAnswer: data.newAnswer
@@ -63,26 +69,28 @@ const AnswersProvider = ({ children, questionId }: Props) => {
         const confirm = window.confirm("Do you want to delete it?");
         if (!confirm) return;
 
-        const backResponse = await fetch(`http://localhost:5500/questions/answers/${_id}`, {
+        const response = await fetch(`http://localhost:5500/api/comments/answers/${_id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${accessJWT}`
-            },
+            }
         });
-        if (!backResponse.ok) {
-            const data = await backResponse.json();
-            return { error: data.error };
+
+        if (!response.ok) {
+            const error = await response.json();
+            return { error: error.message || "Delete failed" };
         }
+
         dispatch({
             type: "deleteAnswer",
             _id
         });
         await refetchQuestions();
-    }
+    };
 
     const editAnswer = async (editedAnswer: Answer) => {
         const accessJWT = localStorage.getItem('accessJWT') || sessionStorage.getItem('accessJWT');
-        const backResponse = await fetch(`http://localhost:5500/questions/answers/${editedAnswer._id}`, {
+        const response = await fetch(`http://localhost:5500/api/comments/answers/${editedAnswer._id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -90,23 +98,24 @@ const AnswersProvider = ({ children, questionId }: Props) => {
             },
             body: JSON.stringify(editedAnswer)
         });
-        const data = await backResponse.json();
 
+        const data = await response.json();
         if ('error' in data) {
             return { error: data.error };
         }
+
         dispatch({
             type: "editAnswer",
             editedAnswer
         });
         return { success: data.success };
-    }
+    };
 
     useEffect(() => {
         if (!questionId) return;
 
         setAnswerIsLoading(true);
-        fetch(`http://localhost:5500/questions/${questionId}/answers`)
+        fetch(`http://localhost:5500/api/comments/${questionId}/answers`)
             .then(async res => {
                 if (!res.ok) {
                     const err = await res.text();
