@@ -1,7 +1,4 @@
-
-
 import { Router } from 'express';
-
 import { verifyJWT } from '../middleware/auth.js';
 import { getAnswersForQuestion, addAnswerToQuestion, deleteAnswer, editAnswer } from '../controllers/commentController.js';
 
