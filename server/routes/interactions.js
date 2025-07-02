@@ -5,11 +5,11 @@ import { getAllLikes, toggleLike, getUserLikes, getAllUserLikedQuestions } from 
 
 const router = Router();
 
-router.get('/count/:questionId', getAllLikes);
+router.get('/count/:targetType/:targetId', getAllLikes);
 
-router.post('/toggle/:questionId', verifyJWT, toggleLike);
+router.post('/toggle/:targetType/:targetId', verifyJWT, toggleLike);
 
-router.get('/user-liked/:questionId', verifyJWT, getUserLikes);
+router.get('/user-liked/:targetType/:targetId', verifyJWT, getUserLikes);
 
 router.get('/liked-questions', verifyJWT, getAllUserLikedQuestions);
 

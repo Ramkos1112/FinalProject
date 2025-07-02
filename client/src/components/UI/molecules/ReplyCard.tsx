@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Answer, UserContextType } from "../../../types";
 import UsersContext from "../../contexts/UserContext";
 import AnswersContext from "../../contexts/RepliesContext";
+import LikeButton from "../molecules/LikeButton";
 
 type Props = {
   reply: Answer;
@@ -66,6 +67,13 @@ const ReplyCard = ({ reply }: Props) => {
     <Card>
       <TopBar>
         <div>
+          {loggedInUser && (
+            <LikeButton
+              targetId={reply._id}
+              targetType="answer"
+              accessToken={sessionStorage.getItem("accessJWT") ?? undefined}
+            />
+          )}
           <strong>{reply.authorUsername}</strong>
           <div style={{ fontSize: "0.7rem", color: "gray" }}>
             {new Date(reply.createdAt).toLocaleString()}
