@@ -14,12 +14,12 @@ export const login = async (req, res) => {
 
         const DB_RESPONSE = await db.collection('users').findOne({ username });
         if (!DB_RESPONSE) {
-            return res.status(404).send({ error: 'No user found with that username' });
+            return res.status(404).send({ error: 'User credentials are incorrect.' });
         }
 
         const passwordMatch = bcrypt.compareSync(password, DB_RESPONSE.password);
         if (!passwordMatch) {
-            return res.status(401).send({ error: 'Incorrect password' });
+            return res.status(401).send({ error: 'User credentials are incorrect.' });
         }
 
         const { password: _, ...restUserInfo } = DB_RESPONSE;
