@@ -18,8 +18,7 @@ const StyledDiv = styled.div`
         font-weight: 600;
         >input{
             margin: 10px;
-            border-radius: 10px;
-            border: var(--color-darkest);
+            border: 2px var(--color-secondary) solid;
             height: 30px;
             width: 70%;
             text-align: center;
@@ -31,7 +30,7 @@ const StyledDiv = styled.div`
     }
     .button{
         background-color: var(--color-background);
-        border: none;
+        border-right: 2px var(--color-secondary) solid;
         border-radius: 12px;
         padding: 0 10px;
         margin-top: 10px;
@@ -90,24 +89,28 @@ const EditingUserInfo = ({ user, onClose}: Props) => {
     return ( 
         <StyledDiv>
             <div>
+                <p>Username</p>
                 <input
                     value={formData.username}
                     onChange={(e) => handleChange("username", e.target.value)}
                 />
             </div>
             <div>
+                <p>Email</p>
                 <input
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
                 />
             </div>
             <div>
+                <p>Name</p>
                 <input
                     value={formData.fullName}
                     onChange={(e) => handleChange("fullName", e.target.value)}
                 />
             </div>
             <div>
+                <p>Avatar</p>
                 <input
                     value={formData.avatar}
                     onChange={(e) => handleChange("avatar", e.target.value)}

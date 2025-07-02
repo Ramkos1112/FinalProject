@@ -12,8 +12,7 @@ type Props = {
 const StyledDiv = styled.div`
   padding: 20px;
   background-color: var(--color-background);
-  border-radius: 40px;
-  box-shadow: 0 6px 12px var(--color-secondary);
+  border: 2px solid var(--color-secondary);
 
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -66,37 +65,6 @@ const StyledDiv = styled.div`
     > svg {
       color: var(--color-secondary);
       font-size: 20px;
-    }
-  }
-
-  @media (min-width: 0px) and (max-width: 768px) {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-    padding: 30px;
-    text-align: center;
-    min-width: 340px;
-    .info {
-      grid-area: 4 / 1 / 5 / 2;
-      padding: 0px;
-      font-size: 12px;
-      border: none;
-      display: flex;
-      justify-content: flex-end;
-      align-items: baseline;
-      gap: 20px;
-    }
-    .body {
-      grid-area: 1 / 1 / 4 / 2;
-      > .tags {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 0px;
-        > span {
-          font-size: 12px;
-        }
-      }
     }
   }
 `;

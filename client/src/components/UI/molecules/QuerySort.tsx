@@ -24,7 +24,6 @@ const StyleDiv = styled.div`
         padding: 2px;
         font-family: "Times New Roman", Times, serif;
         font-weight: 600;
-        box-shadow: 0 6px 12px var(--color-secondary);
     }
 `
 
@@ -38,6 +37,8 @@ const QuestionsSort = () => {
             <select onChange={(e) => changeSort(e.target.value)} defaultValue="sort_createdAt=-1">
                 <option value="sort_createdAt=-1">Newest</option>
                 <option value="sort_createdAt=1">Oldest</option>
+                <option value="sort_answersCount=-1">Most answered</option>Add commentMore actions
+                <option value="sort_answersCount=1">Least answered</option>
             </select>
         </StyleDiv>
      );
