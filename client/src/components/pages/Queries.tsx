@@ -20,8 +20,7 @@ font-family: "Times New Roman", Times, serif;
   align-items: center;
     justify-content: center;
   flex-direction: column;
-  align-items: flex-end;
-    justify-content: flex-end;
+  align-items: center;
   padding: 10px 0px;
   margin-bottom: 30px;
 
@@ -50,7 +49,7 @@ font-family: "Times New Roman", Times, serif;
 
 .questionsContainer {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-direction: column;
   gap: 20px;
@@ -58,9 +57,9 @@ font-family: "Times New Roman", Times, serif;
 
 .sortFilter {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: last baseline;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
   gap: 10px;
 
   button,

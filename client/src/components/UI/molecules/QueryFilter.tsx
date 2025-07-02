@@ -1,133 +1,145 @@
-import { useContext } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
 import styled from "styled-components";
-
 import QuestionsContext from "../../contexts/QuestionContext.tsx";
 import { QuestionsContextType } from "../../../types.ts";
 
-const StyledForm = styled.form `
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 32px;
+  position: relative;
+
+  .dropdown {
+    position: relative;
+    width: 200px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 600;
+    color: var(--color-secondary);
+    cursor: pointer;
+  }
+
+  .dropdown-header {
+    padding: 8px;
+    background-color: var(--color-background);
+    border: 2px solid var(--color-secondary);
+    border-radius: 6px;
+    user-select: none;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    width: 200px;
+    background-color: var(--color-background);
+    border: 2px solid var(--color-secondary);
+    border-radius: 6px;
+    z-index: 999;
+    margin-top: 2px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    flex-wrap: no-wrap;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .filterClear {
+    display: flex;
+    justify-content: center;
     gap: 10px;
-    padding: 0px 32px;
-    .buttons{
-        background-color: var(--color-background);
-        box-shadow: 0 6px 12px var(--color-secondary);
-        >button{
-            background-color: var(--color-background);            
-            border: none;
-            padding: 2px 10px;
-            font-family: "Times New Roman", Times, serif;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    > button {
+      background-color: var(--color-background);
+      border: 2px solid var(--color-secondary);
+      font-family: "Times New Roman", Times, serif;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
     }
-    .search{
-        border-radius: 10px;
-        border: none;
-        padding: 0 10px;
-        height: 30px;
-        font-weight: 600;
-        background-color: var(--color-background);
-        box-shadow: 0 6px 12px var(--color-secondary);
-        font-family: "Times New Roman", Times, serif;
+
+    > button:hover {
+      background-color: #cc7e7e;
+      transition: 0.3s;
     }
-    .filterClear{
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        >.filter, .clear{
-            background-color: var(--color-background);
-            border: none;
-            padding: 0 px;
-            height: 30px;
-            font-weight: 600;
-            box-shadow: 0 6px 12px var(--color-secondary);
-            font-family: "Times New Roman", Times, serif;
-            cursor: pointer;
-        }
-        >.filter:hover{
-            background-color:  #cc7e7e);
-            transition: 0.3s;
-        }  
-        >.clear:hover{
-            background-color: #cc7e7e;
-            transition: 0.3s;
-        }
-    }
-    @media (min-width: 0px) and (max-width: 1389px) {
-        justify-content: center;
-        margin: 20px 0px;
-    }   
-`
+  }
+`;
 
 const QuestionsFilter = () => {
+  const { changeFilter } = useContext(QuestionsContext) as QuestionsContextType;
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { changeFilter } = useContext(QuestionsContext) as QuestionsContextType;
+  const availableTags = ["Learning", "Advice", "Opinions", "Inspiration", "Comissions", "SFW"];
 
-    const formik = useFormik({
-        initialValues: {
-            filter_isAnswered: '',
-            filter_title: '',
-            filter_tags: [] as string[]
-        },
-        onSubmit(values){
-            const params = new URLSearchParams();
-            
-            if(values.filter_isAnswered === 'true' || values.filter_isAnswered === 'false'){
-                params.append('filter_isAnswered', values.filter_isAnswered);
-            }
+  const formik = useFormik({
+    initialValues: {
+      filter_tags: [] as string[],
+    },
+    onSubmit(values) {
+      const params = new URLSearchParams();
+      values.filter_tags.forEach(tag => params.append("filter_tags", tag));
+      changeFilter(params.toString());
+    },
+  });
 
-            if (values.filter_title.trim() !== '') {
-                params.append('filter_title', values.filter_title.trim());
-            }
+  const handleCheckboxChange = (tag: string) => {
+    const current = formik.values.filter_tags;
+    if (current.includes(tag)) {
+      formik.setFieldValue("filter_tags", current.filter(t => t !== tag));
+    } else {
+      formik.setFieldValue("filter_tags", [...current, tag]);
+    }
+  };
 
-            if (values.filter_tags.length > 0) {
-                values.filter_tags.forEach(tag => params.append('filter_tags', tag));
-            }
-            changeFilter(params.toString());
-        }
-    });
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-    return ( 
-        <StyledForm onSubmit={formik.handleSubmit}>
-            <div className="buttons">
-                <button
-                    type="button"
-                    onClick={() => {
-                        formik.setFieldValue("filter_isAnswered", "true", true);
-                        formik.handleSubmit();
-                    }}
-                    className={formik.values.filter_isAnswered === "true" ? "active" : ""}
-                >
-                    Answered
-                </button>
-                <button
-                    type="button"
-                    onClick={() => {
-                        formik.setFieldValue("filter_isAnswered", "false", true);
-                        formik.handleSubmit();
-                    }}
-                    className={formik.values.filter_isAnswered === "false" ? "active" : ""}
-                >
-                    Unanswered
-                </button>
-            </div>
-            <div>
-            </div>
-            <div className="filterClear">
-                <button 
-                    type="button"
-                    onClick={() => {
-                        formik.resetForm();
-                        formik.handleSubmit();
-                    }}
-                    className="clear"
-                >Clear</button>
-            </div>
-        </StyledForm>
-    );
-}
- 
+  return (
+    <StyledForm onSubmit={formik.handleSubmit}>
+      <div className="dropdown" ref={dropdownRef}>
+        <div className="dropdown-header" onClick={() => setDropdownOpen(!dropdownOpen)}>
+          {formik.values.filter_tags.length > 0
+            ? formik.values.filter_tags.join(", ")
+            : "Select tags"}
+        </div>
+
+        {dropdownOpen && (
+          <div className="dropdown-menu">
+            {availableTags.map(tag => (
+              <label key={tag}>
+                <input
+                  type="checkbox"
+                  checked={formik.values.filter_tags.includes(tag)}
+                  onChange={() => handleCheckboxChange(tag)}
+                />{" "}
+                {tag}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="filterClear">
+        <button type="submit">Filter</button>
+        <button
+          type="button"
+          onClick={() => {
+            formik.resetForm();
+            formik.handleSubmit();
+          }}
+        >
+          Clear
+        </button>
+      </div>
+    </StyledForm>
+  );
+};
+
 export default QuestionsFilter;

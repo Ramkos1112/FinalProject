@@ -8,14 +8,13 @@ const StyledSection = styled.section`
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
-  /* Shared button styling */
   button {
     background-color: var(--color-background);
     color: var(--color-secondary);
-    border: none;
+    border: 2px var(--color-secondary) solid;
     padding: 8px 12px;
     font-weight: 600;
     font-family: "Times New Roman", Times, serif;
@@ -31,6 +30,8 @@ const StyledSection = styled.section`
   .text {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 50%;
     padding: 50px 0;
     color: white;
@@ -40,57 +41,6 @@ const StyledSection = styled.section`
       margin: 0;
       padding: 10px;
     }
-
-    .link{
-        text-decoration: none;
-        color: var(--color-accent)
-    }
-    .link:hover{
-        color: var(--color-background);
-    }
-  }
-
-  .logReg {
-    text-decoration: none;
-    color: #ff4d4d;
-  }
-
-  @media (max-width: 599px) {
-    padding: 20px;
-
-    .text {
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 600px) and (max-width: 767px) {
-    padding: 20px;
-
-
-    .text {
-      width: 90%;
-    }
-  }
-
-  @media (min-width: 768px) and (max-width: 1080px) {
-    padding: 20px 100px;
-
-    .text {
-      width: 70%;
-    }
-  }
-
-  @media (min-width: 1081px) and (max-width: 1600px) {
-    .text {
-      width: 60%;
-    }
-
-  @media (min-width: 1601px) {
-    justify-content: space-between;
-
-    .text {
-      color: var(--color-accentText);
-    }
   }
 `;
 
@@ -98,7 +48,11 @@ const Home = () => {
     return ( 
         <StyledSection>
             <div className="text">
-                <p><Link to='/login' className="logReg">Login</Link> and begin discussing art projects with others, or <Link to='/register' className="logReg">Register</Link> now and enjoy!</p>
+                <h1> Welcome to the artist forums!</h1>
+                <p>This is a space to ask other artists for advice. If you don't have an account please make one and begin exchanging information with like minded individuals.</p>
+                <Link to="/questions">
+                  <button>Go to Forum</button>
+                </Link>
             </div>
         </StyledSection>
      );
