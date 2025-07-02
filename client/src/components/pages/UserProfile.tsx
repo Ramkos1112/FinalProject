@@ -80,11 +80,7 @@ const StyledSection = styled.section`
   .question {
     padding: 10px;
     margin-bottom: 10px;
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .question:hover {
-    background-color: var(--color-accent);
+    border: 2px solid var(--color-secondary);
   }
 
   @media (max-width: 767px) {
@@ -99,7 +95,6 @@ const StyledSection = styled.section`
     }
 
     .likedQ {
-      border-left: 2px solid var(--color-primary);
       border-top: none;
     }
   }
@@ -112,7 +107,6 @@ const StyledSection = styled.section`
     }
 
     .likedQ {
-      border-left: 2px solid var(--color-primary);
       border-top: none;
     }
   }
@@ -132,7 +126,7 @@ const UserInfo = () => {
             return;
         }
 
-        fetch("http://localhost:5500/likes/liked-questions", {
+        fetch("http://localhost:5500/api/interactions/liked-questions", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${accessJWT}`,
